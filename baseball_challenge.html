@@ -13,10 +13,22 @@
 }
 
 .box p {
-	font-size: 50px;
+	/*font-size: 50px;*/
 }
 </style>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#SaveChanges').click(function(){
+    var teamName= $('#TeamName').val();
+    $('#standings').find('tbody')
+  .append('<tr><td>'+ teamName +'</td><td>0</td><td>0</td><td>0.00</td></tr>');
+  $('#application')[0].reset();
+  });
+})
 
+</script>
 </head>
 
 <body>
@@ -24,7 +36,7 @@
 		<div class="row box">
         	<div class="span12">
         		<p>Beer League Baseball? Challenge</p>
-        	 <table class="table table-bordered">
+        	 <table class="table table-bordered" id="standings">
              <caption>Standings</caption> 
               <thead>
                 <tr>
@@ -38,21 +50,48 @@
                </tbody>
           </table>
   <!-- Button to trigger modal -->
-            <p><a href="#myModal" role="button" class="btn" data-toggle="modal">Add a Team</a></p>
+            <p><a href="#myModal" role="button" id="modalbtn" class="btn" data-toggle="modal">Add a Team</a></p>
                <!-- Modal -->
-              <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div id="myModal" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-header">
                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                    <h3 id="myModalLabel">Enter Team Information</h3>
                </div>
                <div class="modal-body">
                    <p>Team info</p>
+                   <form class="form-horizontal" id="application">
+                    <div class="control-group">
+                      <label class="control-label" for="TeamName">Team Name</label>
+                      <div class="controls">
+                   <input type="text" name="TeamName" id="TeamName">
+                 </div>
+               </div>
+                <div class="control-group">
+                      <label class="control-label" for="ManagerName">Manager Name</label>
+                      <div class="controls">
+                   <input type="text" name="ManagerName" id="ManagerName">
+                 </div>
+               </div>
+                   <div class="control-group">
+                      <label class="control-label" for="Sponsor">Sponsor</label>
+                      <div class="controls">
+                   <input type="text" name="Sponsor" id="Sponsor">
+                 </div>
+               </div>
+                    <div class="control-group">
+                      <label class="control-label" for="Zip">Zip Code</label>
+                      <div class="controls">
+                   <input type="text" name="Zip" id="Zip">
+                 </div>
+               </div>
+                   </form>
                </div>
                <div class="modal-footer">
                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                   <button class="btn btn-primary">Save changes</button>
+                   <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save changes</button>
                </div>
            </div> <!-- End Modal --> 
+           <a href="#" class="btn" id="Update">Update Results</a>
         	</div> <!-- span12 --> 	
         </div>
                
