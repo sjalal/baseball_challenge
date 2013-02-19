@@ -23,11 +23,15 @@ var teamNames=[];
 var mngrNames=[];
 var sponsors= [];
 var zipCodes= [];
+var wins=0;
+var losses=0;
+var totalGames=0;
+var percentage= wins/totalGames;
 $(document).ready(function(){
   $('#SaveChanges').click(function(){
     var teamName= $('#TeamName').val();
     $('#standings').find('tbody')
-  .append('<tr><td>'+ teamName +'</td><td>0</td><td>0</td><td>0.00</td></tr>');
+  .append('<tr><td><a id='+ teamName +'>'+ teamName +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
   teamNames.push(teamName);
   mngrNames.push($('#ManagerName').val());
   sponsors.push($('#Sponsor').val());
@@ -35,6 +39,7 @@ $(document).ready(function(){
   console.log(teamNames, mngrNames, sponsors, zipCodes);
   $('#application')[0].reset();
   });
+
 })
 
 </script>
