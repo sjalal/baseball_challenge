@@ -19,11 +19,20 @@
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
+var teamNames=[];
+var mngrNames=[];
+var sponsors= [];
+var zipCodes= [];
 $(document).ready(function(){
   $('#SaveChanges').click(function(){
     var teamName= $('#TeamName').val();
     $('#standings').find('tbody')
   .append('<tr><td>'+ teamName +'</td><td>0</td><td>0</td><td>0.00</td></tr>');
+  teamNames.push(teamName);
+  mngrNames.push($('#ManagerName').val());
+  sponsors.push($('#Sponsor').val());
+  zipCodes.push($('#Zip').val());
+  console.log(teamNames, mngrNames, sponsors, zipCodes);
   $('#application')[0].reset();
   });
 })
