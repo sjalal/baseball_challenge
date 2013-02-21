@@ -6,7 +6,6 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-    <link rel="stylesheet" type="text/css" href="css/jquery.validity.css">
 
 <style>
 
@@ -31,14 +30,9 @@ th {
 
 </style>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.validity.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
-var teamNames=[];
-var mngrNames=[];
-var phoneNum=[];
-var sponsors= [];
-var zipCodes= [];
+var Leagueinfo=[];
 var wins=0;
 var losses=0;
 var totalGames=0;
@@ -46,15 +40,11 @@ var percentage= (+wins)/(+totalGames);
 $(document).ready(function(){ 
   $('#SaveChanges').click(function(){
     var teamName= $('#TeamName').val();
+    var team= $('#application').serializeArray();
     $('#standings').find('tbody')
   .append('<tr><td><a id='+ teamName +'>'+ teamName +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
-  $('#teamName').tooltip();
-  teamNames.push(teamName);
-  mngrNames.push($('#ManagerName').val());
-  sponsors.push($('#Sponsor').val());
-  zipCodes.push($('#Zip').val());
-  phoneNum.push($('#TelNumber').val());
-  console.log(teamNames, mngrNames, sponsors, zipCodes, phoneNum);
+  Leagueinfo.push(team);
+  console.log(Leagueinfo);
   $('#application')[0].reset();
   });
 
@@ -96,35 +86,35 @@ $(document).ready(function(){
              <div class="control-group">
                  <label class="control-label" for="TeamName">Team Name</label>
              <div class="controls">
-                <input type="text" id="TeamName" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct name" placeholder="Type Team name">
+                <input type="text" name="teamname" id="TeamName" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct name" placeholder="Type Team name">
              </div>
            </div>
             
            <div class="control-group">
                <label class="control-label" for="ManagerName">Manager Name</label>
               <div class="controls">
-                <input type="text" id="ManagerName" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct name" placeholder="Type Manager Name">
+                <input type="text" name="managername" id="ManagerName" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct name" placeholder="Type Manager Name">
               </div>
            </div>
   
            <div class="control-group">
                  <label class="control-label" for="TelNumber">Phone No.</label>
              <div class="controls">
-                <input type="tel" id="TelNumber" pattern="[0-9]{10}" data-error="This is not a valid phone number" placeholder="Phone Number">
+                <input type="tel" name="telnumber" id="TelNumber" pattern="[0-9]{10}" data-error="This is not a valid phone number" placeholder="Phone Number">
              </div>
            </div>
 
            <div class="control-group">
                  <label class="control-label" for="Sponsor">Sponsor Name</label>
              <div class="controls">
-                <input type="text" id="Sponsor" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct form of name" placeholder="Type Sponsor name">
+                <input type="text" name="sponsor" id="Sponsor" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct form of name" placeholder="Type Sponsor name">
              </div>
            </div>
 
            <div class="control-group">
                  <label class="control-label" for="Zip">Zip Code</label>
              <div class="controls">
-                <input type="number" min="0" max="5" id="Zip" data-error="Please give a correct zipcode" placeholder="Zip code">
+                <input type="number" min="0" max="5" name="zip" id="Zip" data-error="Please give a correct zipcode" placeholder="Zip code">
              </div>
            </div>
         </form>
