@@ -36,28 +36,25 @@ th {
 <script type="text/javascript">
 var teamNames=[];
 var mngrNames=[];
+var phoneNum=[];
 var sponsors= [];
 var zipCodes= [];
 var wins=0;
 var losses=0;
 var totalGames=0;
-var percentage= wins/totalGames;
+var percentage= (+wins)/(+totalGames);
 $(document).ready(function(){ 
   $('#SaveChanges').click(function(){
-    $('#application').validity(function(){
-      $('#TeamName').require("Please enter a team name");
-      $('#ManagerName').require("Please enter the name of your team manager");
-      $('#Sponsor').require("Please enter the name of your Sponsor");
-      $('#Zip').require("Please enter your zip code").match('zip');
-    });
     var teamName= $('#TeamName').val();
     $('#standings').find('tbody')
   .append('<tr><td><a id='+ teamName +'>'+ teamName +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+  $('#teamName').tooltip();
   teamNames.push(teamName);
   mngrNames.push($('#ManagerName').val());
   sponsors.push($('#Sponsor').val());
   zipCodes.push($('#Zip').val());
-  console.log(teamNames, mngrNames, sponsors, zipCodes);
+  phoneNum.push($('#TelNumber').val());
+  console.log(teamNames, mngrNames, sponsors, zipCodes, phoneNum);
   $('#application')[0].reset();
   });
 
