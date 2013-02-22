@@ -38,15 +38,33 @@ var losses=0;
 var totalGames=0;
 var percentage= (+wins)/(+totalGames);
 $(document).ready(function(){ 
-  $('#SaveChanges').click(function(){
+  $('#SaveChanges').click(function(){  
     var teamName= $('#TeamName').val();
     var team= $('#application').serializeArray();
     $('#standings').find('tbody')
   .append('<tr><td><a id='+ teamName +'>'+ teamName +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
   Leagueinfo.push(team);
-  console.log(Leagueinfo);
+  postLeague(Leagueinfo);
+  //var jsteam= JSON.stringify(Leagueinfo);
+  //console.log(Leagueinfo);
+  //$('body').append("<p>"+ jsteam +"</p>");
   $('#application')[0].reset();
-  });
+  });  //end click event
+
+  function postLeague(info){  //post Leagueinfo to JSON file
+    $.ajax({
+ type: "POST",
+ url: "http://www.nashvillecoder.me/blyons/",
+ data: {
+   "file": "freddyvsjason.json",
+   "data": JSON.stringify(info)
+ },
+ success: function (data) {
+   console.log(data);
+ },
+ dataType: "json"
+});
+  }; //end postLeague function
 
 })
 
