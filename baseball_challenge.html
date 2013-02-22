@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Beer League Baseball Challenge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+
+<style>
+
+body {
+  background-color: #b4b4b4;
+}
+.box {
+  text-align: center;
+}
+
+caption {
+  font-size: 20pt;
+  font-weight: bold;
+  color : #0033cc;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+th {
+ font-style: italic;
+}
+
+</style>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+var Leagueinfo=[];
+var wins=0;
+var losses=0;
+var totalGames=0;
+var percentage= (+wins)/(+totalGames);
+$(document).ready(function(){ 
+  $('#SaveChanges').click(function(){  
+    var teamName= $('#TeamName').val();
+    var team= $('#application').serializeArray();
+    $('#standings').find('tbody')
+  .append('<tr><td><a id='+ teamName +'>'+ teamName +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+  Leagueinfo.push(team);
+  postLeague(Leagueinfo);
+  //var jsteam= JSON.stringify(Leagueinfo);
+  //console.log(Leagueinfo);
+  //$('body').append("<p>"+ jsteam +"</p>");
+  $('#application')[0].reset();
+  });  //end click event
+
+  function postLeague(info){  //post Leagueinfo to JSON file
+    $.ajax({
+ type: "POST",
+ url: "http://www.nashvillecoder.me/blyons/",
+ data: {
+   "file": "freddyvsjason.json",
+   "data": JSON.stringify(info)
+ },
+ success: function (data) {
+   console.log(data);
+ },
+ dataType: "json"
+});
+  }; //end postLeague function
+
+})
+
+</script>
+</head>
+
+<body>
+  <div class"container">
+    <div class="row box">
+          <div class="span12"><img src="img/images.jpg" class="img-rounded">
+            <h2>Beer and Veggie Dogs? League</h2>
+           <table class="table table-bordered" id="standings">
+             <caption>Standings</caption> 
+              <thead>
+                <tr>
+                  <th>Team</th>
+                  <th>Win</th>
+                  <th>Loss</th>
+                  <th>Percentage % </th>
+                </tr>
+             </thead>
+               <tbody>
+               </tbody>
+          </table>
+                <!-- Button to trigger modal -->
+            <button type="button" href="#myModal" role="button" class="btn btn-primary" data-toggle="modal">Add a Team</button>
+               <!-- Modal -->
+  <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                   <h3 id="myModalLabel">Enter Team Information</h3>
+               </div>
+
+      <div class="modal-body">
+                <!-- Form -->
+        <form class="form-horizontal" id="application">
+             <div class="control-group">
+                 <label class="control-label" for="TeamName">Team Name</label>
+             <div class="controls">
+                <input type="text" name="teamname" id="TeamName" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct name" placeholder="Type Team name">
+             </div>
+           </div>
+            
+           <div class="control-group">
+               <label class="control-label" for="ManagerName">Manager Name</label>
+              <div class="controls">
+                <input type="text" name="managername" id="ManagerName" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct name" placeholder="Type Manager Name">
+              </div>
+           </div>
+  
+           <div class="control-group">
+                 <label class="control-label" for="TelNumber">Phone No.</label>
+             <div class="controls">
+                <input type="tel" name="telnumber" id="TelNumber" pattern="[0-9]{10}" data-error="This is not a valid phone number" placeholder="Phone Number">
+             </div>
+           </div>
+
+           <div class="control-group">
+                 <label class="control-label" for="Sponsor">Sponsor Name</label>
+             <div class="controls">
+                <input type="text" name="sponsor" id="Sponsor" required="required" pattern="[A-Za-z0-9]*" data-error="Please give a correct form of name" placeholder="Type Sponsor name">
+             </div>
+           </div>
+
+           <div class="control-group">
+                 <label class="control-label" for="Zip">Zip Code</label>
+             <div class="controls">
+                <input type="number" min="0" max="5" name="zip" id="Zip" data-error="Please give a correct zipcode" placeholder="Zip code">
+             </div>
+           </div>
+        </form>
+      </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save Changes</button>
+            </div>
+  </div> <!-- End Modal --> 
+           <a href="#" class="btn" id="Update">Update Results</a>
+           <!-- <a id="element" href="#" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</a> -->
+  </div> <!-- span12 -->
+             
+  
+
+  </div> <!-- End row box -->
+               
+
+</div> <!--End container -->
+</body>
+</html>
