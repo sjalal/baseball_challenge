@@ -51,7 +51,7 @@ $(document).ready(function(){
       sponsor: $('#Sponsor').val(),
       zip: $('#Zip').val()
     };
-  addTable(teamName);
+  addTable(teams);
   postLeague(teams);
   $('#application')[0].reset();
   });  //end click event
@@ -59,7 +59,7 @@ $(document).ready(function(){
 
   function addTable(data){  //append team name to table
      $('#standings').find('tbody')
-  .append('<tr><td><a id='+ data +'>'+ data +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+  .append('<tr><td><a id='+ data.tname +' data-toggle="tooltip" title="Manager: '+ data.manager +' Phone number: '+ data.phone +' Sponsor: '+ data.sponsor +' Zip Code: '+ data.zip +'">'+ data.tname +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
   };  //end addTable function
 
 
@@ -82,7 +82,7 @@ $(document).ready(function(){
       success: function(teams){
         for(var i=0; i<teams.length; i++){
           $('#standings').find('tbody')
-  .append('<tr><td><a id='+ teams[i].tname +'>'+ teams[i].tname +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+  .append('<tr><td><a id='+ teams[i].tname +' data-toggle="tooltip" title="Manager: '+ teams[i].manager +' Phone number: '+ teams[i].phone +' Sponsor: '+ teams[i].sponsor +' Zip Code: '+ teams[i].zip +'">'+ teams[i].tname +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
         };
       },
      dataType: "json"
