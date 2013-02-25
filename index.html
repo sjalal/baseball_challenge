@@ -40,9 +40,11 @@ var percentage= ((+wins)/(+totalGames)).toFixed(2)* 100 + "%";
 
 
 $(document).ready(function(){ 
+  cleardata();
+  populateTable();
   $('#SaveChanges').click(function(){ 
     var teamName= $('#TeamName').val();
-    var team={
+    var teams={
       name: teamName,
       manager: $('#ManagerName').val(),
       phone: $('#TelNumber').val(),
@@ -55,9 +57,9 @@ $(document).ready(function(){
   });  //end click event
 
 
-  function addTable(teams){  //append team name to table
+  function addTable(data){  //append team name to table
      $('#standings').find('tbody')
-  .append('<tr><td><a id='+ teams +'>'+ teams +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+  .append('<tr><td><a id='+ data +'>'+ data +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
   };  //end addTable function
 
 
@@ -72,6 +74,30 @@ $(document).ready(function(){
  dataType: "json"
 });
   }; //end postLeague function
+
+  function populateTable(){
+    $.ajax({
+      type: "GET",
+      url: "backliftapp/team",
+      success: function(teams){
+        $(teams).each(function(){
+       $('#standings').find('tbody')
+  .append('<tr><td><a id='+ teams.name +'>'+ teams.name +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+     });
+     
+    },
+        dataType: "json"
+    })
+  };
+  function cleardata(teams){
+    $.ajax({
+    type: "DELETE",
+    url: "/backliftapp/team" + teams.id, 
+    success: function(result) { 
+        console.log("Deleted!");
+    } 
+});
+  }
 
 })
 
