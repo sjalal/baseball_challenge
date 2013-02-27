@@ -33,12 +33,15 @@ th {
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="backlift-reloader.js"></script>
 <script type="text/javascript">
-var wins=0;
-var losses=0;
-var totalGames=(+wins) + (+losses);
-var percentage= ((+wins)/(+totalGames)).toFixed(2)* 100 + "%";
 var teams;
-var maxTeams= 8;
+var totalGames= function(wins, losses){
+  (+wins) + (+losses);
+};
+var percentage= function(wins){
+  ((+wins)/(totalGames(wins))).toFixed(2)* 100 + "%"
+};
+var schedule;
+var leagueArray= [];
 var sched4 = [ 
 [ [1, 4], [2, 4] ],
 [ [1, 3], [2, 4] ],    //4 teams schedule
@@ -73,11 +76,14 @@ $(document).ready(function(){
       manager: $('#ManagerName').val(),
       phone: $('#TelNumber').val(),
       sponsor: $('#Sponsor').val(),
-      zip: $('#Zip').val()
+      zip: $('#Zip').val(),
+      wins: 0,
+      losses: 0
     };
     if($('#standings tbody tr').length<8){
   addTable(teams);
   postLeague(teams);
+  schedCheck($('#standings tbody tr').length);
 }
 else{
   alert("League limit has been reached! Please try next year.");
@@ -90,9 +96,14 @@ else{
     $('#addTeam').attr("disabled", "disabled");
   }); //end click event
 
+
   function addTable(data){  //append team name to table
      $('#standings').find('tbody')
-  .append('<tr><td><a id='+ data.tname +' data-toggle="tooltip" title="Manager: '+ data.manager +' Phone number: '+ data.phone +' Sponsor: '+ data.sponsor +' Zip Code: '+ data.zip +'">'+ data.tname +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+  .append('<tr><td><a id='+ data.tname +' data-toggle="tooltip" title="Manager: '+ data.manager +' Phone number: '+ data.phone +' Sponsor: '+ data.sponsor +' Zip Code: '+ data.zip +'">'+ data.tname +'</a></td><td>'+ (+data.wins) +'</td><td>'+ (+data.losses) +'</td><td>'+ percentage(data.wins) +'</td></tr>');
+  leagueArray.push(data);
+  for(var i=0; i<leagueArray.length; i++){
+  leagueArray[i].id= +i + 1;};
+  console.log(leagueArray);
   };  //end addTable function
 
 
@@ -115,7 +126,10 @@ else{
       success: function(teams){
         for(var i=0; i<teams.length; i++){
           $('#standings').find('tbody')
-  .append('<tr><td><a id='+ teams[i].tname +' data-toggle="tooltip" title="Manager: '+ teams[i].manager +' Phone number: '+ teams[i].phone +' Sponsor: '+ teams[i].sponsor +' Zip Code: '+ teams[i].zip +'">'+ teams[i].tname +'</a></td><td>'+ wins +'</td><td>'+ losses +'</td><td>'+ percentage +'</td></tr>');
+  .append('<tr><td><a id='+ teams[i].tname +' data-toggle="tooltip" title="Manager: '+ teams[i].manager +' Phone number: '+ teams[i].phone +' Sponsor: '+ teams[i].sponsor +' Zip Code: '+ teams[i].zip +'">'+ teams[i].tname +'</a></td><td>'+ (+teams[i].wins) +'</td><td>'+ (+teams[i].losses) +'</td><td>'+ percentage(teams[i].wins) +'</td></tr>');
+  leagueArray.push(teams[i]);
+  schedCheck($('#standings tbody tr').length);
+  console.log(leagueArray);
         };
         if(teams.length===8){
           $('#addTeam').attr("disabled", "disabled");
@@ -124,17 +138,39 @@ else{
      dataType: "json"
     })
   }; //end populateTable
+
+  function schedCheck(number){
+    if(number < 4){
+      return false
+    }
+    else if(number===4){
+      schedule= sched4
+    }
+    else if(number===5 || number=== 6){
+      schedule= sched6
+    }
+    else{
+      schedule= sched8
+    }
+    console.log(schedule);
+  };
   // function cleardata(){  //delete entries from database
   //   $.ajax({
   //     type: "DELETE",
-  //     url: "backliftapp/team/insert id here",
+  //     url: "backliftapp/team/team id",
   //     success: function(result) { 
   //       console.log("Deleted!");
   //   } 
   //   })
   // }
 
-})
+  //  if($(score 1).val > $(score 2)){
+  //      team1.wins += 1 
+  // }
+  // else{
+  //       team2.wins += 1
+  // }  score function
+});  //end ready
 
 </script>
 </head>
