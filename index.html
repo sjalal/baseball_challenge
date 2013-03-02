@@ -3,181 +3,25 @@
   <head>
     <title>Beer League Baseball Challenge</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-
-<style>
-
+<style type="text/css">
 body {
-  background-color: #b4b4b4;
+  background: #b4b4b4;
 }
-.box {
-  text-align: center;
-}
-
-caption {
-  font-size: 20pt;
-  font-weight: bold;
-  color : #0033cc;
-  padding-top: 10px;
-  padding-bottom: 20px;
-}
-
-th {
- font-style: italic;
-}
-
 </style>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="backlift-reloader.js"></script>
-<script type="text/javascript">
-var teams;
-var totalGames= function(wins, losses){
-  (+wins) + (+losses);
-};
-var percentage= function(wins){
-  ((+wins)/(totalGames(wins))).toFixed(2)* 100 + "%"
-};
-var schedule;
-var leagueArray= [];
-var sched4 = [ 
-[ [1, 4], [2, 4] ],
-[ [1, 3], [2, 4] ],    //4 teams schedule
-[ [1, 2], [3, 4] ]
-];
-
-var sched6 = [ 
-[ [1, 6], [2, 5], [3, 4] ],
-[ [1, 5], [4, 6], [2, 3] ],
-[ [1, 4], [3, 5], [2, 6] ],  //5-6 teams schedule
-[ [1, 3], [2, 4], [5, 6] ],
-[ [1, 2], [3, 6], [4, 5] ],
-];
-
-var sched8 = [
-[ [1, 8], [2, 7], [3, 6], [4, 5] ],
-[ [1, 7], [6, 8], [2, 5], [3, 4] ],
-[ [1, 6], [5, 7], [4, 8], [2, 3] ],
-[ [1, 5], [4, 6], [3, 7], [2, 8] ],  //7-8 teams schedule
-[ [1, 4], [3, 5], [2, 6], [7, 8] ],
-[ [1, 3], [2, 4], [5, 8], [6, 7] ],
-[ [1, 2], [3, 8], [4, 7], [5, 6] ],
-];
-$(document).ready(function(){ 
-  // cleardata();
-  populateTable(teams);
-  $('#standings tbody tr td a').tooltip();
-  $('#SaveChanges').click(function(){ 
-    var teamName= $('#TeamName').val();
-      teams={
-      tname: teamName,
-      manager: $('#ManagerName').val(),
-      phone: $('#TelNumber').val(),
-      sponsor: $('#Sponsor').val(),
-      zip: $('#Zip').val(),
-      wins: 0,
-      losses: 0
-    };
-    if($('#standings tbody tr').length<8){
-  addTable(teams);
-  postLeague(teams);
-  schedCheck($('#standings tbody tr').length);
-}
-else{
-  alert("League limit has been reached! Please try next year.");
-};
-
-  $('#application')[0].reset();
-  });  //end click event
- 
-  $('#Update').click(function(){
-    $('#addTeam').attr("disabled", "disabled");
-  }); //end click event
-
-
-  function addTable(data){  //append team name to table
-     $('#standings').find('tbody')
-  .append('<tr><td><a id='+ data.tname +' data-toggle="tooltip" title="Manager: '+ data.manager +' Phone number: '+ data.phone +' Sponsor: '+ data.sponsor +' Zip Code: '+ data.zip +'">'+ data.tname +'</a></td><td>'+ (+data.wins) +'</td><td>'+ (+data.losses) +'</td><td>'+ percentage(data.wins) +'</td></tr>');
-  leagueArray.push(data);
-  for(var i=0; i<leagueArray.length; i++){
-  leagueArray[i].id= +i + 1;};
-  console.log(leagueArray);
-  };  //end addTable function
-
-
-  function postLeague(info){  //post Leagueinfo to JSON file
-    $.ajax({
- type: "POST",
- url: "backliftapp/team",
- data: info,
- success: function (data) {
-   console.log(data);
- },
- dataType: "json"
-});
-  }; //end postLeague function
-
-  function populateTable(){ //get data and append to table on page load
-    $.ajax({
-      type: "GET",
-      url: "backliftapp/team",
-      success: function(teams){
-        for(var i=0; i<teams.length; i++){
-          $('#standings').find('tbody')
-  .append('<tr><td><a id='+ teams[i].tname +' data-toggle="tooltip" title="Manager: '+ teams[i].manager +' Phone number: '+ teams[i].phone +' Sponsor: '+ teams[i].sponsor +' Zip Code: '+ teams[i].zip +'">'+ teams[i].tname +'</a></td><td>'+ (+teams[i].wins) +'</td><td>'+ (+teams[i].losses) +'</td><td>'+ percentage(teams[i].wins) +'</td></tr>');
-  leagueArray.push(teams[i]);
-  schedCheck($('#standings tbody tr').length);
-  console.log(leagueArray);
-        };
-        if(teams.length===8){
-          $('#addTeam').attr("disabled", "disabled");
-        };
-      },
-     dataType: "json"
-    })
-  }; //end populateTable
-
-  function schedCheck(number){
-    if(number < 4){
-      return false
-    }
-    else if(number===4){
-      schedule= sched4
-    }
-    else if(number===5 || number=== 6){
-      schedule= sched6
-    }
-    else{
-      schedule= sched8
-    }
-    console.log(schedule);
-  };
-  // function cleardata(){  //delete entries from database
-  //   $.ajax({
-  //     type: "DELETE",
-  //     url: "backliftapp/team/team id",
-  //     success: function(result) { 
-  //       console.log("Deleted!");
-  //   } 
-  //   })
-  // }
-
-  //  if($(score 1).val > $(score 2)){
-  //      team1.wins += 1 
-  // }
-  // else{
-  //       team2.wins += 1
-  // }  score function
-});  //end ready
-
-</script>
+<script type="text/javascript" src="js/script.js"></script>
 </head>
 
 <body>
   <div class"container">
-    <div class="row box">
+    <div class="row-fluid box">
           <div class="span12"><img src="img/images.jpg" class="img-rounded">
             <h2>Beer and Veggie Dogs? League</h2>
            <table class="table table-bordered" id="standings">
@@ -188,6 +32,7 @@ else{
                   <th>Win</th>
                   <th>Loss</th>
                   <th>Percentage % </th>
+                  <th>Edit</th>
                 </tr>
              </thead>
                <tbody>
@@ -208,35 +53,35 @@ else{
              <div class="control-group">
                  <label class="control-label" for="TeamName">Team Name</label>
              <div class="controls">
-                <input type="text" name="teamname" id="TeamName">
+                <input type="text" name="teamname" id="TeamName" class="team_inputs">
              </div>
            </div>
             
            <div class="control-group">
                <label class="control-label" for="ManagerName">Manager Name</label>
               <div class="controls">
-                <input type="text" name="managername" id="ManagerName">
+                <input type="text" name="managername" id="ManagerName" class="team_inputs">
               </div>
            </div>
   
            <div class="control-group">
                  <label class="control-label" for="TelNumber">Phone No.</label>
              <div class="controls">
-                <input type="tel" name="telnumber" id="TelNumber">
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs">
              </div>
            </div>
 
            <div class="control-group">
                  <label class="control-label" for="Sponsor">Sponsor Name</label>
              <div class="controls">
-                <input type="text" name="sponsor" id="Sponsor">
+                <input type="text" name="sponsor" id="Sponsor" class="team_inputs">
              </div>
            </div>
 
            <div class="control-group">
                  <label class="control-label" for="Zip">Zip Code</label>
              <div class="controls">
-                <input type="number" name="zip" id="Zip">
+                <input type="number" name="zip" id="Zip" class="team_inputs">
              </div>
            </div>
         </form>
@@ -247,14 +92,80 @@ else{
                 <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save Changes</button>
             </div>
   </div> <!-- End Modal --> 
-           <a href="#" class="btn" id="Update">Update Results</a>
+           <a href="#" class="btn" id="StartSeason">Start the Season</a>
            <!-- <a id="element" href="#" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</a> -->
   </div> <!-- span12 -->
              
   
 
   </div> <!-- End row box -->
-               
+  <div class="row-fluid box">
+   <h3>Schedule</h3>
+    <br>
+  <div class="row-fluid box">
+    <div class="span6 offset3">
+      <table class="table table-bordered">
+        <caption>Week 1</caption>
+        <thead>
+          <tr>
+            <th>Games</th>
+            <th>Scores</th>
+          </tr> 
+        </thead>
+        <tr>
+          <td>Team1 vs Team 4</td>
+          <td><a class="btn update" >Update results</a></td>
+        </tr>
+         <tr>
+          <td>Team2 vs Team 3</td>
+          <td><a class="btn update" >Update results</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row-fluid box">
+    <div class="span6 offset3">
+      <table class="table table-bordered">
+        <caption>Week 2</caption>
+        <thead>
+          <tr>
+            <th>Games</th>
+            <th>Scores</th>
+          </tr> 
+        </thead>
+        <tr>
+          <td>Team1 vs Team 3</td>
+          <td><a class="btn update" >Update results</a></td>
+        </tr>
+         <tr>
+          <td>Team2 vs Team 4</td>
+          <td><a class="btn update" >Update results</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row-fluid box">
+    <div class="span6 offset3">
+      <table class="table table-bordered">
+        <caption>Week 3</caption>
+        <thead>
+          <tr>
+            <th>Games</th>
+            <th>Scores</th>
+          </tr> 
+        </thead>
+        <tr>
+          <td>Team1 vs Team 2</td>
+          <td><a class="btn update" >Update results</a></td>
+        </tr>
+         <tr>
+          <td>Team3 vs Team 4</td>
+          <td><a class="btn update" >Update results</a></td>
+        </tr>
+      </table>
+    </div>
+    </div> 
+    </div>         
 
 </div> <!--End container -->
 </body>
