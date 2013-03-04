@@ -98,8 +98,32 @@ function schedTableSet(){
 		for(var j=0 ; j<schedule[i].length; j++){
 			$('#schedTable').append('<tbody><tr> \
           <td>'+ leagueArray[schedule[i][j][0] - 1].tname +' vs '+ leagueArray[schedule[i][j][1] - 1].tname +'</td> \
-          <td><a class="btn update" href="#myModal2" role="button" id="updateScore" class="btn btn-primary btn-mini" data-toggle="modal">Update Score</a></td> \
+          <td><a class="btn update" href="#myModal'+ j +'" role="button" id="updateScore" class="btn btn-primary btn-mini" data-toggle="modal">Update Score</a></td> \
         </tr></tbody>');
+			$('body').append('<div id="myModal'+ j +'" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
+                <div class="modal-header"> \
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> \
+                   <h3 id="myModalLabel">Enter Score</h3> \
+               </div> \
+		<div class="modal-body"> \
+            <div class="control-group"> \
+                 <label class="control-label">'+ leagueArray[schedule[i][j][0] - 1].tname +'</label> \
+             <div class="controls"> \
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs"> \
+             </div> \
+           </div> \
+           <div class="control-group"> \
+                 <label class="control-label" for="TelNumber">'+ leagueArray[schedule[i][j][1] - 1].tname +'</label> \
+             <div class="controls"> \
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs"> \
+             </div> \
+           </div> \
+      </div> \
+			<div class="modal-footer"> \
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> \
+                <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save Changes</button> \
+            </div> \
+  </div>');
 		};
 	};
 };
