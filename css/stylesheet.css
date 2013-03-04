@@ -1,0 +1,18 @@
+body {
+  background: #b4b4b4;
+}
+.box {
+  text-align: center;
+}
+
+caption {
+  font-size: 20pt;
+  font-weight: bold;
+  color : #0033cc;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+th {
+ font-style: italic;
+}

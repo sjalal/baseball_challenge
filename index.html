@@ -3,35 +3,20 @@
   <head>
     <title>Beer League Baseball Challenge</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-
-<style>
-
+<style type="text/css">
 body {
-  background-color: #b4b4b4;
+  background: #b4b4b4;
 }
-.box {
-  text-align: center;
-}
-
-caption {
-  font-size: 20pt;
-  font-weight: bold;
-  color : #0033cc;
-  padding-top: 10px;
-  padding-bottom: 20px;
-}
-
-th {
- font-style: italic;
-}
-
 </style>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="backlift-reloader.js"></script>
+<<<<<<< HEAD
 <script type="text/javascript">
 var teams;
 var totalGames= function(wins, losses){
@@ -173,11 +158,14 @@ else{
 });  //end ready
 
 </script>
+=======
+<script type="text/javascript" src="js/script.js"></script>
+>>>>>>> development
 </head>
 
 <body>
   <div class"container">
-    <div class="row box">
+    <div class="row-fluid box">
           <div class="span12"><img src="img/images.jpg" class="img-rounded">
             <h2>Beer and Veggie Dogs? League</h2>
            <table class="table table-bordered" id="standings">
@@ -188,6 +176,7 @@ else{
                   <th>Win</th>
                   <th>Loss</th>
                   <th>Percentage % </th>
+                  <th>Edit</th>
                 </tr>
              </thead>
                <tbody>
@@ -208,35 +197,35 @@ else{
              <div class="control-group">
                  <label class="control-label" for="TeamName">Team Name</label>
              <div class="controls">
-                <input type="text" name="teamname" id="TeamName">
+                <input type="text" name="teamname" id="TeamName" class="team_inputs">
              </div>
            </div>
             
            <div class="control-group">
                <label class="control-label" for="ManagerName">Manager Name</label>
               <div class="controls">
-                <input type="text" name="managername" id="ManagerName">
+                <input type="text" name="managername" id="ManagerName" class="team_inputs">
               </div>
            </div>
   
            <div class="control-group">
                  <label class="control-label" for="TelNumber">Phone No.</label>
              <div class="controls">
-                <input type="tel" name="telnumber" id="TelNumber">
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs">
              </div>
            </div>
 
            <div class="control-group">
                  <label class="control-label" for="Sponsor">Sponsor Name</label>
              <div class="controls">
-                <input type="text" name="sponsor" id="Sponsor">
+                <input type="text" name="sponsor" id="Sponsor" class="team_inputs">
              </div>
            </div>
 
            <div class="control-group">
                  <label class="control-label" for="Zip">Zip Code</label>
              <div class="controls">
-                <input type="number" name="zip" id="Zip">
+                <input type="number" name="zip" id="Zip" class="team_inputs">
              </div>
            </div>
         </form>
@@ -247,14 +236,50 @@ else{
                 <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save Changes</button>
             </div>
   </div> <!-- End Modal --> 
-           <a href="#" class="btn" id="Update">Update Results</a>
+           <a href="#" class="btn" id="StartSeason">Start the Season</a>
            <!-- <a id="element" href="#" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</a> -->
   </div> <!-- span12 -->
              
   
 
   </div> <!-- End row box -->
-               
+  <div class="row-fluid box">
+   <h3>Schedule</h3>
+    <br>
+    <div class="row-fluid box">
+      <div class="span6 offset3">
+    <table class="table table-bordered" id="schedTable">
+
+    </table>
+    </div>
+  </div>
+</div>
+ <div id="myModal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                   <h3 id="myModalLabel">Enter Score</h3>
+               </div>
+
+      <div class="modal-body">
+            <div class="control-group">
+                 <label class="control-label"></label>
+             <div class="controls">
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs">  <!-- id and classes for score form wil be changed -->
+             </div>
+           </div>
+           <div class="control-group">
+                 <label class="control-label" for="TelNumber"></label>
+             <div class="controls">
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs">
+             </div>
+           </div>
+      </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save Changes</button>
+            </div>
+  </div> <!-- End Modal --> 
 
 </div> <!--End container -->
 </body>
