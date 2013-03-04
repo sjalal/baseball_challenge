@@ -102,70 +102,40 @@ body {
   <div class="row-fluid box">
    <h3>Schedule</h3>
     <br>
-  <div class="row-fluid box">
-    <div class="span6 offset3">
-      <table class="table table-bordered">
-        <caption>Week 1</caption>
-        <thead>
-          <tr>
-            <th>Games</th>
-            <th>Scores</th>
-          </tr> 
-        </thead>
-        <tr>
-          <td>Team1 vs Team 4</td>
-          <td><a class="btn update" >Update results</a></td>
-        </tr>
-         <tr>
-          <td>Team2 vs Team 3</td>
-          <td><a class="btn update" >Update results</a></td>
-        </tr>
-      </table>
+    <div class="row-fluid box">
+      <div class="span6 offset3">
+    <table class="table table-bordered" id="schedTable">
+
+    </table>
     </div>
   </div>
-  <div class="row-fluid box">
-    <div class="span6 offset3">
-      <table class="table table-bordered">
-        <caption>Week 2</caption>
-        <thead>
-          <tr>
-            <th>Games</th>
-            <th>Scores</th>
-          </tr> 
-        </thead>
-        <tr>
-          <td>Team1 vs Team 3</td>
-          <td><a class="btn update" >Update results</a></td>
-        </tr>
-         <tr>
-          <td>Team2 vs Team 4</td>
-          <td><a class="btn update" >Update results</a></td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <div class="row-fluid box">
-    <div class="span6 offset3">
-      <table class="table table-bordered">
-        <caption>Week 3</caption>
-        <thead>
-          <tr>
-            <th>Games</th>
-            <th>Scores</th>
-          </tr> 
-        </thead>
-        <tr>
-          <td>Team1 vs Team 2</td>
-          <td><a class="btn update" >Update results</a></td>
-        </tr>
-         <tr>
-          <td>Team3 vs Team 4</td>
-          <td><a class="btn update" >Update results</a></td>
-        </tr>
-      </table>
-    </div>
-    </div> 
-    </div>         
+</div>
+ <div id="myModal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                   <h3 id="myModalLabel">Enter Score</h3>
+               </div>
+
+      <div class="modal-body">
+            <div class="control-group">
+                 <label class="control-label"></label>
+             <div class="controls">
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs">  <!-- id and classes for score form wil be changed -->
+             </div>
+           </div>
+           <div class="control-group">
+                 <label class="control-label" for="TelNumber"></label>
+             <div class="controls">
+                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs">
+             </div>
+           </div>
+      </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save Changes</button>
+            </div>
+  </div> <!-- End Modal --> 
 
 </div> <!--End container -->
 </body>

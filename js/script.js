@@ -16,7 +16,7 @@ function getTeams(){
 	function populateTable(data){
 		for(var i=0; i<data.length; i++){
 			$('#standings').find('tbody').append(
-				'<tr><td><a id="popover" rel="popover" title="'+ data[i].tname +'" data-content="Manager: '+ data[i].manager +'<br>Phone #: '+ data[i].phone +'<br>Sponsor: '+ data[i].sponsor +'<br>Zip: '+ data[i].zip +'">'+ data[i].tname +'</td><td>'+ data[i].wins +'</td><td>'+ data[i].losses +'</td><td>'+ percent(data[i].wins, data[i].losses) +'</td><td><a class="btn btn-mini btn-danger erase" type="button" onclick="deleteTeam(\''+ data[i].id +'\')">Delete</a></td></tr>'
+				'<tr><td><a id="popover" rel="popover" title="'+ data[i].tname +'" data-content="Manager: '+ data[i].manager +'<br>Phone #: '+ data[i].phone +'<br>Sponsor: '+ data[i].sponsor +'<br>Zip: '+ data[i].zip +'">'+ data[i].tname +'</td><td>'+ data[i].wins +'</td><td>'+ data[i].losses +'</td><td>'+ percent(+data[i].wins, +data[i].losses) +'</td><td><a class="btn btn-mini btn-danger erase" type="button" onclick="deleteTeam(\''+ data[i].id +'\')">Delete</a></td></tr>'
 				);
 		}
 	}; //end populateTable
@@ -72,116 +72,75 @@ function deleteTeam(id){
 
 function schedCheck(){
 	if(leagueArray.length===4){
-
+		schedule=sched4;
 	}
+	else if(leagueArray.length===5 || leagueArray.length===6){
+		schedule=sched6;
+	}
+	else if(leagueArray.length===7 || leagueArray.length===8){
+		schedule=sched8;
+	};
+	
+	schedTableSet();
+	console.log(schedule);
+	console.log(leagueArray[0].tname);
 };
 
+
+function schedTableSet(){
+	for(var i=0 ; i<schedule.length; i++){
+		$('#schedTable').append('<thead> \
+          <tr> \
+            <th>Week '+ (+i + 1) +'</th> \
+            <th>Scores</th> \
+          </tr> \
+        </thead>');
+		for(var j=0 ; j<schedule[i].length; j++){
+			$('#schedTable').append('<tbody><tr> \
+          <td>'+ leagueArray[schedule[i][j][0] - 1].tname +' vs '+ leagueArray[schedule[i][j][1] - 1].tname +'</td> \
+          <td><a class="btn update" href="#myModal2" role="button" id="updateScore" class="btn btn-primary btn-mini" data-toggle="modal">Update Score</a></td> \
+        </tr></tbody>');
+		};
+	};
+};
 
 // function byeCheck(){
 // 	if (leagueArray.length%2!===0){
 
 // 	}
-// }
+// };
 
-
-// function table4(){
-// 	$('body').append('<div class="row-fluid box">
-//    <h3>Schedule</h3>
-//     <br>
-//   <div class="row-fluid box">
-//     <div class="span6 offset3">
-//       <table class="table table-bordered">
-//         <caption>Week 1</caption>
-//         <thead>
-//           <tr>
-//             <th>Games</th>
-//             <th>Scores</th>
-//           </tr> 
-//         </thead>
-//         <tr>
-//           <td>'+ leagueArray[0].tname +' vs '+ leagueArray[3].tname +'</td>
-//           <td><a class="btn update" >Update results</a></td>
-//         </tr>
-//          <tr>
-//           <td>Team2 vs Team 3</td>
-//           <td><a class="btn update" >Update results</a></td>
-//         </tr>
-//       </table>
-//     </div>
-//   </div>
-//   <div class="row-fluid box">
-//     <div class="span6 offset3">
-//       <table class="table table-bordered">
-//         <caption>Week 2</caption>
-//         <thead>
-//           <tr>
-//             <th>Games</th>
-//             <th>Scores</th>
-//           </tr> 
-//         </thead>
-//         <tr>
-//           <td>Team1 vs Team 3</td>
-//           <td><a class="btn update" >Update results</a></td>
-//         </tr>
-//          <tr>
-//           <td>Team2 vs Team 4</td>
-//           <td><a class="btn update" >Update results</a></td>
-//         </tr>
-//       </table>
-//     </div>
-//   </div>
-//   <div class="row-fluid box">
-//     <div class="span6 offset3">
-//       <table class="table table-bordered">
-//         <caption>Week 3</caption>
-//         <thead>
-//           <tr>
-//             <th>Games</th>
-//             <th>Scores</th>
-//           </tr> 
-//         </thead>
-//         <tr>
-//           <td>Team1 vs Team 2</td>
-//           <td><a class="btn update" >Update results</a></td>
-//         </tr>
-//          <tr>
-//           <td>Team3 vs Team 4</td>
-//           <td><a class="btn update" >Update results</a></td>
-//         </tr>
-//       </table>
-//     </div>
-//     </div> 
-//     </div>')
-// }
 
 var leagueArray= [];
-var percent= function(wins, losses){
+var schedule;
+function percent(wins, losses){
 	((+wins)/((+wins) + (+losses))).toFixed(2)* 100 + "%"
 };
+
+//----------------------Schedules------------------------------------
 var sched4 = [ 
-[ [leagueArray[0], leagueArray[3]], [leagueArray[1], leagueArray[2]] ],
-[ [leagueArray[0], leagueArray[2]], [leagueArray[1], leagueArray[3]] ],    //4 teams schedule
-[ [leagueArray[0], leagueArray[1]], [leagueArray[2], leagueArray[3]] ]
+[ [1, 4], [2, 3] ],
+[ [1, 3], [2, 4] ],
+[ [1, 2], [3, 4] ]
 ];
 
 var sched6 = [ 
-[ [leagueArray[0], leagueArray[5]], [leagueArray[1], leagueArray[4]], [leagueArray[2], leagueArray[3]] ],
-[ [leagueArray[0], leagueArray[4]], [leagueArray[3], leagueArray[5]], [leagueArray[1], leagueArray[2]] ],
-[ [leagueArray[0], leagueArray[3]], [leagueArray[2], leagueArray[4]], [leagueArray[1], leagueArray[5]] ],  //5-6 teams schedule
-[ [leagueArray[0], leagueArray[2]], [leagueArray[1], leagueArray[3]], [leagueArray[4], leagueArray[5]] ],
-[ [leagueArray[0], leagueArray[1]], [leagueArray[2], leagueArray[5]], [leagueArray[3], leagueArray[4]] ],
+[ [1, 6], [2, 5], [3, 4] ],
+[ [1, 5], [4, 6], [2, 3] ],
+[ [1, 4], [3, 5], [2, 6] ],
+[ [1, 3], [2, 4], [5, 6] ],
+[ [1, 2], [3, 6], [4, 5] ],
 ];
 
 var sched8 = [
-[ [leagueArray[0], leagueArray[7]], [leagueArray[1], leagueArray[6]], [leagueArray[2], leagueArray[5]], [leagueArray[3], leagueArray[4]] ],
-[ [leagueArray[0], leagueArray[6]], [leagueArray[5], leagueArray[7]], [leagueArray[1], leagueArray[4]], [leagueArray[2], leagueArray[3]] ],
-[ [leagueArray[0], leagueArray[5]], [leagueArray[4], leagueArray[6]], [leagueArray[3], leagueArray[7]], [leagueArray[1], leagueArray[2]] ],
-[ [leagueArray[0], leagueArray[4]], [leagueArray[3], leagueArray[5]], [leagueArray[2], leagueArray[6]], [leagueArray[1], leagueArray[7]] ],  //7-8 teams schedule
-[ [leagueArray[0], leagueArray[3]], [leagueArray[2], leagueArray[4]], [leagueArray[1], leagueArray[5]], [leagueArray[6], leagueArray[7]] ],
-[ [leagueArray[0], leagueArray[2]], [leagueArray[1], leagueArray[3]], [leagueArray[4], leagueArray[7]], [leagueArray[5], leagueArray[6]] ],
-[ [leagueArray[0], leagueArray[1]], [leagueArray[2], leagueArray[7]], [leagueArray[3], leagueArray[6]], [leagueArray[4], leagueArray[5]] ],
+[ [1, 8], [2, 7], [3, 6], [4, 5] ],
+[ [1, 7], [6, 8], [2, 5], [3, 4] ],
+[ [1, 6], [5, 7], [4, 8], [2, 3] ],
+[ [1, 5], [4, 6], [3, 7], [2, 8] ],
+[ [1, 4], [3, 5], [2, 6], [7, 8] ],
+[ [1, 3], [2, 4], [5, 8], [6, 7] ],
+[ [1, 2], [3, 8], [4, 7], [5, 6] ],
 ];
-
 
 $(document).ready(function(){
 	getTeams();
@@ -208,7 +167,7 @@ $(document).ready(function(){
 		var start= confirm("Warning! Once season has started you cannot add teams or edit teams. Do you want to start the season?");
 		if (start===true){
 			$('.erase, #addTeam').attr("disabled", "disabled");
-			// schedCheck();
+			schedCheck();
 		};
 	});
 
