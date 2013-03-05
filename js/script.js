@@ -14,9 +14,10 @@ function getTeams(){
 
 //----------------add team data to standings table-------------------------
 	function populateTable(data){
+		$('#standings tbody').html('');
 		for(var i=0; i<data.length; i++){
 			$('#standings').find('tbody').append(
-				'<tr><td><a id="popover" rel="popover" title="'+ data[i].tname +'" data-content="Manager: '+ data[i].manager +'<br>Phone #: '+ data[i].phone +'<br>Sponsor: '+ data[i].sponsor +'<br>Zip: '+ data[i].zip +'">'+ data[i].tname +'</td><td>'+ data[i].wins +'</td><td>'+ data[i].losses +'</td><td>'+ percent(+data[i].wins, +data[i].losses) +'</td><td><a class="btn btn-mini btn-danger erase" type="button" onclick="deleteTeam(\''+ data[i].id +'\')">Delete</a></td></tr>'
+				'<tr><td><a id="popover" rel="popover" title="'+ data[i].tname +'" data-content="Manager: '+ data[i].manager +'<br>Phone #: '+ data[i].phone +'<br>Sponsor: '+ data[i].sponsor +'<br>Zip: '+ data[i].zip +'">'+ data[i].tname +'</td><td>'+ data[i].wins +'</td><td>'+ data[i].losses +'</td><td>'+ data[i].percent +'%</td><td><a class="btn btn-mini btn-danger erase" type="button" onclick="deleteTeam(\''+ data[i].id +'\')">Delete</a></td></tr>'
 				);
 		}
 	}; //end populateTable
@@ -33,7 +34,8 @@ function getTeams(){
 				sponsor: $('#Sponsor').val(),
 				zip: $('#Zip').val(),
 				wins: 0,
-				losses: 0
+				losses: 0,
+				percent: 0
 			},
 			success: function(data){
 				console.log(data);
@@ -70,14 +72,82 @@ function deleteTeam(id){
 	};   // end deleteTeam
 
 
+function evenCheck(){
+	if(leagueArray.length%2===0){
+		schedCheck();
+	}
+	else{
+		byeWeek();
+	}
+};
+
+function byeWeek(){
+	if(leagueArray.length===5){
+		schedule=sched6;
+	}
+	else if(leagueArray===7){
+		schedule=sched8
+	};
+	for(var i=0; i<schedule.length; i++){
+		$('#schedTable').append('<thead> \
+          <tr> \
+            <th>Week '+ (+i + 1) +'</th> \
+            <th>Scores</th> \
+          </tr> \
+        </thead>');
+        for(var j=0; j<schedule[i].length; j++){
+        	if(schedule[i][j][1]===schedule.length+1){
+        	$('#schedTable').append('<tbody><tr><td>'+ leagueArray[schedule[i][j][0] - 1].tname +' Bye Week</td></tr></tbody>');
+        }
+        else{
+        	var home=leagueArray[schedule[i][j][0] - 1];
+			var away=leagueArray[schedule[i][j][1] - 1];
+			$('#schedTable').append('<tbody><tr> \
+          <td>'+ home.tname +' vs '+ away.tname +'</td> \
+          <td> \
+          <form class="form-horizontal" id="scoreForm"> \
+           <div class="control-group"> \
+                 <label class="control-label">'+ home.tname +'</label> \
+             <div class="controls"> \
+                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][0] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][0] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][0] - 1].losses +'" class="score_inputsHome"> \
+             </div> \
+           </div> \
+           <div class="control-group"> \
+                 <label class="control-label">'+ away.tname +'</label> \
+             <div class="controls"> \
+                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][1] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][1] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][1] - 1].losses +'" class="score_inputsAway"> \
+             </div> \
+           </div> \
+          </form> \
+          <a class="btn" id="scoreSubmit">Submit</a> \
+          </td></tr></tbody>');
+        };
+        	
+        };
+};
+$('#scoreSubmit').click(function(){
+				var homeScore=$(this).parents().find('.score_inputsHome').val();
+				var awayScore=$(this).parents().find('.score_inputsAway').val();
+				var home=$(this).parents().find('.score_inputsHome').attr("id");
+				var away=$(this).parents().find('.score_inputsAway').attr("id");
+				var homeWins=$(this).parents().find('.score_inputsHome').attr("data-wins");
+				var homeLoss=$(this).parents().find('.score_inputsHome').attr("data-losses");
+				var awayWins=$(this).parents().find('.score_inputsAway').attr("data-wins");
+				var awayLoss=$(this).parents().find('.score_inputsAway').attr("data-losses");
+				console.log(home);
+		scoreCheck(homeScore, awayScore, home, away, homeWins, homeLoss, awayWins, awayLoss);}
+		);
+}
+
 function schedCheck(){
+
 	if(leagueArray.length===4){
 		schedule=sched4;
 	}
-	else if(leagueArray.length===5 || leagueArray.length===6){
+	else if(leagueArray.length===6){
 		schedule=sched6;
 	}
-	else if(leagueArray.length===7 || leagueArray.length===8){
+	else if(leagueArray.length===8){
 		schedule=sched8;
 	};
 	
@@ -95,37 +165,88 @@ function schedTableSet(){
             <th>Scores</th> \
           </tr> \
         </thead>');
-		for(var j=0 ; j<schedule[i].length; j++){
+		for(j=0; j<schedule[i].length; j++){
+			var home=leagueArray[schedule[i][j][0] - 1];
+			var away=leagueArray[schedule[i][j][1] - 1];
 			$('#schedTable').append('<tbody><tr> \
-          <td>'+ leagueArray[schedule[i][j][0] - 1].tname +' vs '+ leagueArray[schedule[i][j][1] - 1].tname +'</td> \
-          <td><a class="btn update" href="#myModal'+ j +'" role="button" id="updateScore" class="btn btn-primary btn-mini" data-toggle="modal">Update Score</a></td> \
-        </tr></tbody>');
-			$('body').append('<div id="myModal'+ j +'" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
-                <div class="modal-header"> \
-                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> \
-                   <h3 id="myModalLabel">Enter Score</h3> \
-               </div> \
-		<div class="modal-body"> \
-            <div class="control-group"> \
-                 <label class="control-label">'+ leagueArray[schedule[i][j][0] - 1].tname +'</label> \
+          <td>'+ home.tname +' vs '+ away.tname +'</td> \
+          <td> \
+          <form class="form-horizontal" id="scoreForm"> \
+           <div class="control-group"> \
+                 <label class="control-label">'+ home.tname +'</label> \
              <div class="controls"> \
-                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs"> \
+                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][0] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][0] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][0] - 1].losses +'" class="score_inputsHome"> \
              </div> \
            </div> \
            <div class="control-group"> \
-                 <label class="control-label" for="TelNumber">'+ leagueArray[schedule[i][j][1] - 1].tname +'</label> \
+                 <label class="control-label">'+ away.tname +'</label> \
              <div class="controls"> \
-                <input type="tel" name="telnumber" id="TelNumber" class="team_inputs"> \
+                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][1] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][1] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][1] - 1].losses +'" class="score_inputsAway"> \
              </div> \
            </div> \
-      </div> \
-			<div class="modal-footer"> \
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> \
-                <button class="btn btn-primary" aria-hidden="true" data-dismiss="modal" id="SaveChanges">Save Changes</button> \
-            </div> \
-  </div>');
-		};
+          </form> \
+          <a class="btn" id="scoreSubmit">Submit</a> \
+          </td></tr></tbody>');
+			
+			};
 	};
+	$('#scoreSubmit').click(function(){
+				var homeScore=$(this).parents().find('.score_inputsHome').val();
+				var awayScore=$(this).parents().find('.score_inputsAway').val();
+				var home=$(this).parents().find('.score_inputsHome').attr("id");
+				var away=$(this).parents().find('.score_inputsAway').attr("id");
+				var homeWins=$(this).parents().find('.score_inputsHome').attr("data-wins");
+				var homeLoss=$(this).parents().find('.score_inputsHome').attr("data-losses");
+				var awayWins=$(this).parents().find('.score_inputsAway').attr("data-wins");
+				var awayLoss=$(this).parents().find('.score_inputsAway').attr("data-losses");
+				console.log(home);
+		scoreCheck(homeScore, awayScore, home, away, homeWins, homeLoss, awayWins, awayLoss);}
+		);
+};   //end schedTableSet
+
+
+function scoreCheck(homeScore, awayScore, home, away, homeWins, homeLoss, awayWins, awayLoss){
+	if(homeScore > awayScore){
+	$.ajax({
+		type: "PUT",
+		datatype: "json",
+		url: "backliftapp/team/"+ home,
+		data:{
+			wins: +homeWins + 1,
+			percent: (+homeWins + 1)/((+homeWins + 1) + (+homeLoss)).toFixed(2)* 100
+		}
+	});
+	$.ajax({
+		type: "PUT",
+		datatype: "json",
+		url: "backliftapp/team/"+ away,
+		data:{
+			losses: +awayLoss + 1,
+			percent: (+awayWins)/((+awayWins) + (+awayLoss + 1)).toFixed(2)* 100
+		}
+	});
+}
+	else{
+		$.ajax({
+		type: "PUT",
+		datatype: "json",
+		url: "backliftapp/team/"+ home,
+		data:{
+			losses: +homeLoss + 1,
+			percent: (+homeWins)/((+homeWins) + (+homeLoss + 1)).toFixed(2)* 100
+		}
+	});
+		$.ajax({
+		type: "PUT",
+		datatype: "json",
+		url: "backliftapp/team/"+ away,
+		data:{
+			wins: +awayWins + 1,
+			percent: (+awayWins + 1)/((+awayWins + 1) + (+awayLoss)).toFixed(2)* 100
+		}
+	});
+	};
+	getTeams();
 };
 
 // function byeCheck(){
@@ -137,6 +258,7 @@ function schedTableSet(){
 
 var leagueArray= [];
 var schedule;
+var games;
 function percent(wins, losses){
 	((+wins)/((+wins) + (+losses))).toFixed(2)* 100 + "%"
 };
@@ -174,6 +296,11 @@ $(document).ready(function(){
 		trigger: "hover",
     	html: true
 	});
+	$('#schedTable').popover({
+		selector: "#updateScorepop",
+		trigger: "click",
+		html: true
+	});
 //-------------check to see if league has reached team limit-----------------------
 	$('#addTeam').click(function(){
 		if($('#standings tbody tr').length ===8){
@@ -190,10 +317,11 @@ $(document).ready(function(){
 	$('#StartSeason').click(function(){
 		var start= confirm("Warning! Once season has started you cannot add teams or edit teams. Do you want to start the season?");
 		if (start===true){
-			$('.erase, #addTeam').attr("disabled", "disabled");
-			schedCheck();
+			$('.erase, #addTeam').attr("disabled", true);
+			evenCheck();
 		};
 	});
+$('#standings').stupidtable();
 
 });  //end ready
 
