@@ -100,21 +100,21 @@ function byeWeek(){
         }
         else{
         	var home=leagueArray[schedule[i][j][0] - 1];
-			var away=leagueArray[schedule[i][j][1] - 1];
-			$('#schedTable').append('<tbody><tr> \
+		var away=leagueArray[schedule[i][j][1] - 1];
+		$('#schedTable').append('<tbody><tr> \
           <td>'+ home.tname +' vs '+ away.tname +'</td> \
           <td> \
           <form class="form-horizontal" id="scoreForm"> \
            <div class="control-group"> \
                  <label class="control-label">'+ home.tname +'</label> \
              <div class="controls"> \
-                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][0] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][0] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][0] - 1].losses +'" class="score_inputsHome"> \
+                <input type="text" name="score" id="'+ home.id +'" data-wins="'+ home.wins +'" data-losses="'+ home.losses +'" class="score_inputsHome"> \
              </div> \
            </div> \
            <div class="control-group"> \
                  <label class="control-label">'+ away.tname +'</label> \
              <div class="controls"> \
-                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][1] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][1] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][1] - 1].losses +'" class="score_inputsAway"> \
+                <input type="text" name="score" id="'+ away.id +'" data-wins="'+away.wins +'" data-losses="'+away.losses +'" class="score_inputsAway"> \
              </div> \
            </div> \
           </form> \
@@ -175,13 +175,13 @@ function schedTableSet(){
            <div class="control-group"> \
                  <label class="control-label">'+ home.tname +'</label> \
              <div class="controls"> \
-                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][0] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][0] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][0] - 1].losses +'" class="score_inputsHome"> \
+                <input type="text" name="score" id="'+ home.id +'" data-wins="'+ home.wins +'" data-losses="'+ home.losses +'" class="score_inputsHome"> \
              </div> \
            </div> \
            <div class="control-group"> \
                  <label class="control-label">'+ away.tname +'</label> \
              <div class="controls"> \
-                <input type="text" name="score" id="'+ leagueArray[schedule[i][j][1] - 1].id +'" data-wins="'+ leagueArray[schedule[i][j][1] - 1].wins +'" data-losses="'+ leagueArray[schedule[i][j][1] - 1].losses +'" class="score_inputsAway"> \
+                <input type="text" name="score" id="'+ away.id +'" data-wins="'+ away.wins +'" data-losses="'+ away.losses +'" class="score_inputsAway"> \
              </div> \
            </div> \
           </form> \
