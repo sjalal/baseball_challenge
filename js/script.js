@@ -7,14 +7,13 @@ function getTeams(){
 			success: function(data){
 			leagueArray= data;
 			populateTable(leagueArray);
-			console.log(leagueArray);
 		},
 		});
 	};  //end getTeams
 
 //----------------add team data to standings table-------------------------
 	function populateTable(data){
-		$('#standings tbody').html('');
+		clearTable();
 		for(var i=0; i<data.length; i++){
 			$('#standings').find('tbody').append(
 				'<tr><td><a id="popover" rel="popover" title="'+ data[i].tname +'" data-content="Manager: '+ data[i].manager +'<br>Phone #: '+ data[i].phone +'<br>Sponsor: '+ data[i].sponsor +'<br>Zip: '+ data[i].zip +'">'+ data[i].tname +'</td><td>'+ data[i].wins +'</td><td>'+ data[i].losses +'</td><td>'+ data[i].percent +'%</td><td><a class="btn btn-mini btn-danger erase" type="button" onclick="deleteTeam(\''+ data[i].id +'\')">Delete</a></td></tr>'
@@ -38,8 +37,7 @@ function getTeams(){
 				percent: 0
 			},
 			success: function(data){
-				console.log(data);
-				location.reload();
+				getTeams();
 			}
 		})
 	};  //end addTeams
@@ -71,7 +69,7 @@ function deleteTeam(id){
 		};
 	};   // end deleteTeam
 
-
+//---------------check even or odd number of teams---------------------
 function evenCheck(){
 	if(leagueArray.length%2===0){
 		schedCheck();
@@ -79,8 +77,9 @@ function evenCheck(){
 	else{
 		byeWeek();
 	}
-};
+};//end evenCheck
 
+//-------------odd number of teams schedule creation---------------
 function byeWeek(){
 	if(leagueArray.length===5){
 		schedule=sched6;
@@ -137,8 +136,9 @@ $('#scoreSubmit').click(function(){
 				console.log(home);
 		scoreCheck(homeScore, awayScore, home, away, homeWins, homeLoss, awayWins, awayLoss);}
 		);
-}
+};//end byeWeek
 
+//------------------even number of teams schedule function-----------------
 function schedCheck(){
 
 	if(leagueArray.length===4){
@@ -154,9 +154,9 @@ function schedCheck(){
 	schedTableSet();
 	console.log(schedule);
 	console.log(leagueArray[0].tname);
-};
+};//end schedCheck
 
-
+//---------------Schedule creation function---------------------------
 function schedTableSet(){
 	for(var i=0 ; i<schedule.length; i++){
 		$('#schedTable').append('<thead> \
@@ -190,6 +190,7 @@ function schedTableSet(){
 			
 			};
 	};
+//------------------on Sunmit button click gathers score values and inserts into scoreCheck function-------------	
 	$('#scoreSubmit').click(function(){
 				var homeScore=$(this).parents().find('.score_inputsHome').val();
 				var awayScore=$(this).parents().find('.score_inputsAway').val();
@@ -204,7 +205,7 @@ function schedTableSet(){
 		);
 };   //end schedTableSet
 
-
+//-----------------------function to assign wins and losses by determining higher score value-------------
 function scoreCheck(homeScore, awayScore, home, away, homeWins, homeLoss, awayWins, awayLoss){
 	if(homeScore > awayScore){
 	$.ajax({
@@ -259,9 +260,6 @@ function scoreCheck(homeScore, awayScore, home, away, homeWins, homeLoss, awayWi
 var leagueArray= [];
 var schedule;
 var games;
-function percent(wins, losses){
-	((+wins)/((+wins) + (+losses))).toFixed(2)* 100 + "%"
-};
 
 //----------------------Schedules------------------------------------
 var sched4 = [ 
@@ -321,7 +319,9 @@ $(document).ready(function(){
 			evenCheck();
 		};
 	});
-$('#standings').stupidtable();
+	
+//----------------Table Sorting function------------------	
+	$('#standings').stupidtable();
 
 });  //end ready
 
